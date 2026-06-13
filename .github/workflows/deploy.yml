@@ -10,12 +10,13 @@ permissions:
   contents: read
 
 env:
-  AWS_REGION: us-east-1
-  ECR_REPOSITORY: <REPO_NAME>
-  ECS_CLUSTER: nodejs-app-cluster
-  ECS_SERVICE: nodejs-app-service
-  ECS_TASK_DEFINITION: nodejs-app-task
-  CONTAINER_NAME: nodejs-app
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+  ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
+  ECS_SERVICE: ${{ secrets.ECS_SERVICE }}
+  ECS_TASK_DEFINITION: ${{ secrets.ECS_TASK_DEFINITION }}
+  CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
+
 
 jobs:
   deploy:
@@ -28,7 +29,7 @@ jobs:
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::<ACCOUNT_ID>:role/<GITHUB_ACTIONS_ROLE_NAME>
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.GITHUB_ACTIONS_ROLE_NAME }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
